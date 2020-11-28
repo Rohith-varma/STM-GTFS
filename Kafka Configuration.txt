@@ -1,0 +1,62 @@
+# Section 1: topic
+# To see different options and help on a command, just run it without any parameter
+kafka-topics
+
+# To create a topic with one partition and replication factor of 1
+kafka-topics --zookeeper localhost:2181 --create --topic test --partitions 1 --replication-factor 1
+
+# To get a list of existing topics
+kafka-topics --zookeeper localhost:2181 --list
+
+# To see details of the topic
+kafka-topics --zookeeper localhost:2181 --describe --topic test
+
+# To override default configuration; for example retention period
+kafka-topics --zookeeper localhost:2181 --alter --topic test --config retention.ms=30000
+kafka-topics --zookeeper localhost:2181 --describe --topic test
+
+# To change the number of partitions
+kafka-topics --zookeeper localhost:2181 --alter --topic test --partitions 3
+kafka-topics --zookeeper localhost:2181 --describe --topic test
+
+# To delete a topic
+kafka-topics --zookeeper localhost:2181 --delete --topic test
+kafka-topics --zookeeper localhost:2181 --list
+view raw1.Kafka-tutorial-topic.sh hosted with ❤ by GitHub
+# Section 2: consume and produce
+kafka-topics --zookeeper localhost:2181 --create --topic movie --partitions 3 --replication-factor 1
+
+# To produce to a topic using the commadn line
+kafka-console-producer --broker-list localhost:9092 --topic movie
+> 101,Gone with the Wind,1939,Victor Fleming
+
+# To consume from a topic using the command line
+kafka-console-consumer --bootstrap-server localhost:9092 --topic movie
+
+# Produce new record
+> 102,Star Wars,1977,George Lucas
+
+# It shows in the output of the consumer
+# To force a consumer to consume all the messages 
+kafka-console-consumer --bootstrap-server localhost:9092 --topic movie --from-beginning
+view raw2.Kafka-tutorial-consume-produce.sh hosted with ❤ by GitHub
+# Section 3: Consumer groups
+# Get the list of consumer groups
+kafka-consumer-groups --bootstrap-server localhost:9092 --list
+
+# Describe a consumer group to get more information like LAG
+kafka-consumer-groups --bootstrap-server localhost:9092 --group console-consumer-25623 --describe
+view raw3.Kafka-tutorial-consumer-group.sh hosted with ❤ by GitHub
+# Section 4: partitions
+# Launch consumers to consume from specific 
+kafka-console-consumer --bootstrap-server localhost:9092 --topic movie --partition 0
+kafka-console-consumer --bootstrap-server localhost:9092 --topic movie --partition 1
+kafka-console-consumer --bootstrap-server localhost:9092 --topic movie --partition 2
+
+# Produce more messages
+> 103,The Sound of Music,1965,Robert Wise
+> 104,E.T.,1982,Steven Spielberg
+> 105,Titanic,1997,James Cameron
+> 106,Snow White,1937,
+> 107,Avatar,2009,James Cameron
+> 108,Raiders of the Lost Ark,1981,Steven Spielberg
